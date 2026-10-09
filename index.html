@@ -62,6 +62,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 #lbx .lo{background:linear-gradient(#ff6a5a,#c0261a)}
 #lbx .row{display:flex;gap:8px}
 #lbx input{padding:12px;border-radius:10px;border:2px solid var(--gold);background:#fff;color:#222;font:800 1.3rem monospace;text-align:center;text-transform:uppercase;letter-spacing:6px;width:100%}
+.spin{width:46px;height:46px;margin:6px auto;border:5px solid #ffffff44;border-top-color:#ffd54a;border-radius:50%;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
 .code{font:900 2.4rem monospace;letter-spacing:8px;background:#0a1f5c;border:2px dashed var(--gold);border-radius:10px;padding:6px}
 /* ---------- game, sheet, toast ---------- */
 #game{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;background:#16358f;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -546,7 +548,7 @@ async function createRoom(n, pub) {
     st: { T: EMPTY, turn: 0, D: 0, rolled: false, over: false, seq: 0 } });
   return code;
 }
-async function join(code) {
+async function join(code, txt) {
   code = code.trim().toUpperCase();
   const r = (await fb.d.get(rr(code))).val();
   if (!r || r.status !== "waiting") throw new Error("Room not found or already started");
@@ -560,15 +562,15 @@ async function join(code) {
   });
   if (!res.committed || !ok) throw new Error("Room is full");
   if (Object.keys(res.snapshot.val()).length >= r.n) await fb.d.update(rr(code), { status: "playing" });
-  waitRoom(code, "Joined room", false);
+  waitRoom(code, txt ? "Match found!" : "Joined room", false, txt);
 }
-function waitRoom(code, title, mine) {
+function waitRoom(code, title, mine, txt) {   // txt = quick match: hide the room code, show a spinner
   cur = { code, mine };
-  modal(`<b>${esc(title)}</b><div class="code">${code}</div><p id="cnt">Waiting for players…</p><button data-a="cancel">Cancel</button>`);
+  modal(`<b>${esc(title)}</b>${txt ? '<div class="spin"></div>' : `<div class="code">${code}</div>`}<p id="cnt">${txt || "Waiting for players…"}</p><button data-a="cancel">Cancel</button>`);
   unw = fb.d.onValue(rr(code), s => {
     const r = s.val();
     if (!r) { if (cur) { cur = null; modal(`<b>Room closed</b><button data-a="x">Close</button>`); } return; }
-    const el = $("#cnt"); if (el) el.textContent = `Players ${Object.keys(r.players || {}).length}/${r.n}: waiting…`;
+    const el = $("#cnt"); if (el && !txt) el.textContent = `Players ${Object.keys(r.players || {}).length}/${r.n}: waiting…`;
     if (r.status === "playing") {
       unw(); unw = null; cur = null;
       const seat = +Object.keys(r.players).find(k => r.players[k].uid === who().uid);
@@ -589,9 +591,9 @@ async function quick(tries = 0) {                       // quick 1v1 matchmaking
   await fb.d.runTransaction(fb.d.ref(fb.db, "queue2"), q => { take = q || null; return q ? null : code; });
   if (take) {
     await fb.d.remove(rr(code));
-    try { await join(take); return; } catch (e) { if (tries < 2) return quick(tries + 1); throw e; }
+    try { await join(take, "Opponent found! Starting…"); return; } catch (e) { if (tries < 2) return quick(tries + 1); throw e; }
   }
-  waitRoom(code, "Finding an opponent…", true);
+  waitRoom(code, "Finding an opponent…", true, "Searching for a player…");
 }
 async function logout() {
   ls.del("user"); if (fb) { try { await fb.au.signOut(fb.auth); } catch (e) {} }
@@ -618,7 +620,7 @@ const friends = () => need() && modal(`<b>Play with Friends</b><p>Create a room 
 $("#c-fr").onclick = $("#n-fr").onclick = friends;
 $("#c-on").onclick = async () => {
   if (!need()) return;
-  modal(`<b>Finding an opponent…</b><p>Please wait</p>`);
+  modal(`<b>Finding an opponent…</b><div class="spin"></div>`);
   try { await quick(); } catch (e) { modal(`<b>Could not start</b><p>${esc(e.message)}</p><button data-a="x">Close</button>`); }
 };
 $("#c-pc").onclick = () => modal(`<b>VS Computer</b><p>Choose how many bots to play against</p>
