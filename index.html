@@ -34,7 +34,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 .ttl{text-align:center;margin-top:8px}
 .ltr i{display:inline-grid;place-items:center;width:44px;height:44px;margin:0 2px;border-radius:50%;background:#fff;border:4px solid var(--c);color:var(--c);font:900 1.65rem/1 system-ui;font-style:normal;box-shadow:0 4px 0 #0005}
 .rib{display:inline-block;margin-top:8px;padding:2px 24px;border-radius:6px;background:linear-gradient(#ffe27a,#e39b0f);border:2px solid #7a4a00;color:#5a2d00;font-weight:900;font-size:1.25rem;letter-spacing:7px;box-shadow:0 3px 0 #7a4a00}
-#home::before{content:"";position:fixed;inset:5px;border:4px solid #f5c630;border-radius:16px;pointer-events:none;z-index:3}
 .top{display:flex;align-items:center;gap:8px;padding:18px 16px 4px}
 .me{position:relative;flex:none}
 #av{width:48px;height:48px;border-radius:50%;border:3px solid var(--gold);background:#fff;object-fit:cover;display:block}
@@ -239,7 +238,7 @@ const E=PL.map((pl,a)=&gt;[0,1,2,3].map(i=&gt;{
 }));
 
 // ---------- Game state ----------
-let T,turn,D,rolled,over,busy,act,N=4,bots=[0,0,0,0],MODE=&quot;local&quot;,NET=null,me=0,seq=0,kt;
+let T,turn,D,rolled,over,busy,act,N=4,bots=[0,0,0,0],MODE=&quot;local&quot;,NET=null,me=0,seq=0,kt,aid=0;
 const msg=t=&gt;$(&quot;#msg&quot;).textContent=t;
 const movable=()=&gt;T[turn].map((t,i)=&gt;(t&lt;0?D===6:t+D&lt;=56)?i:-1).filter(i=&gt;i&gt;=0);
 const next=()=&gt;{do turn=(turn+1)%4;while(!act[turn])};
@@ -299,6 +298,12 @@ function after(){
   if(!movable().length){
     busy=true;msg(`${PL[turn].n}: ${D} aaya, par koi token chal nahi sakta. Baari badal rahi hai...`);ui();
     setTimeout(()=&gt;{busy=false;rolled=false;next();push();msg(`${PL[turn].n} ki baari — apna dice roll karo`);ui();render()},1300);
+    return;
+  }
+  const mv=movable(),uq=new Set(mv.map(i=&gt;T[turn][i]));      // distinct choices (same-position tokens count as one)
+  if(uq.size===1&amp;&amp;!bots[turn]&amp;&amp;(MODE!==&quot;online&quot;||turn===me)){
+    const id=++aid;msg(`${D} aaya! Token apne aap chal raha hai...`);ui();render();
+    setTimeout(()=&gt;{if(id===aid&amp;&amp;rolled&amp;&amp;!over&amp;&amp;!busy)move(mv[0])},650);
     return;
   }
   msg(`${D} aaya! Uchhalte hue token par click karo.`);ui();render();
