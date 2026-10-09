@@ -39,12 +39,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .me{position:relative;flex:none}
 #av{width:48px;height:48px;border-radius:50%;border:3px solid var(--gold);background:#fff;object-fit:cover;display:block}
 .lv{position:absolute;left:-4px;bottom:-4px;width:18px;height:18px;border-radius:50%;background:var(--gold);color:#3a2300;font-size:.7rem;font-weight:900;display:grid;place-items:center}
-#nm{font-weight:800;max-width:20vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 3px #0008}
-.gear{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--gold);background:#0b2a78;font-size:1rem}
-.chips{display:flex;gap:6px;margin-left:auto}
-.chip{display:flex;align-items:center;gap:4px;background:linear-gradient(#0a1f5c,#16399a);border:2px solid var(--gold);border-radius:999px;padding:3px 4px 3px 10px;font-weight:800;white-space:nowrap}
-.chip:last-child{padding-right:12px}
-.chip em{font-style:normal;background:#2fd24b;color:#fff;border-radius:6px;width:22px;height:22px;display:grid;place-items:center;font-weight:900;cursor:pointer}
+#nm{font-weight:800;max-width:55vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 3px #0008}
+.gear{margin-left:auto;flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--gold);background:#0b2a78;font-size:1rem}
 .hl{margin:4px auto 0!important;width:min(80vw,300px)!important;text-align:center}
 .crown{font-size:2.1rem;line-height:1;filter:drop-shadow(0 3px 0 #7a4a00)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px 18px 0}
@@ -55,9 +51,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 .card .ic::before,.card .ic::after{content:"";position:absolute;top:9px;bottom:9px;width:15px;border-radius:5px;background:linear-gradient(#ffe27a,#c77a00)}
 .card .ic::before{left:10px}.card .ic::after{right:10px}
 .card small{font-size:.66rem;color:#8dff9b;text-shadow:none;font-weight:700}
-.claim{margin:18px auto 0;width:min(86%,380px)!important;padding:12px;border:3px solid #7a4a00;border-radius:14px;background:linear-gradient(#ffe27a,#e39b0f);color:#3a2300;font-weight:900;letter-spacing:1px;box-shadow:0 4px 0 #7a4a00;animation:glow 1.6s infinite alternate}
-.claim em{font-style:normal;background:#3a2300;color:#ffe27a;padding:2px 8px;border-radius:8px;margin-left:6px}
-@keyframes glow{to{box-shadow:0 4px 0 #7a4a00,0 0 22px 4px #ffd54a}}
 .spacer{flex:1;min-height:16px}
 .nav{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:16px 10px 14px;background:linear-gradient(#0d2468,#071845);border-top:3px solid var(--gold)}
 .nav button{background:none;border:0;font-weight:700;font-size:.7rem;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0}
@@ -104,7 +97,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <div class="me"><img id="av" alt=""><span class="lv">1</span></div>
     <b id="nm"></b>
     <button class="gear" id="gear" aria-label="Profile">⚙️</button>
-    <div class="chips"><span class="chip">🪙 <b id="coins">500</b><em id="plus">+</em></span><span class="chip">🏆 <b id="wins">0</b></span></div>
+    
   </header>
   <div class="hl"><div class="crown">👑</div><div class="ttl"></div><div class="lg"></div></div>
   <div class="grid">
@@ -113,7 +106,6 @@ button{font:inherit;color:inherit;cursor:pointer}
     <button class="card" id="c-pc"><div class="in"><div class="ic">🤖</div>VS<br>COMPUTER<small>● 1–3 bots</small></div></button>
     <button class="card" id="c-pp"><div class="in"><div class="ic">🎲</div>PASS N<br>PLAY<small>● 2–4 on one device</small></div></button>
   </div>
-  <button class="claim" id="claim">🎁 CLAIM DAILY BONUS <em>+100</em></button>
   <div class="spacer"></div>
   <nav class="nav">
     <button id="n-help"><span>❓</span>Help</button>
@@ -126,7 +118,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 
 <div id="game" hidden>
   <div id="gbar"><button id="back">← Back</button><span id="gname"></span></div>
-  <iframe id="gf" title="Ludo" srcdoc="&lt;!DOCTYPE html&gt;
+  <iframe id="gf" title="Ludo" allow="autoplay" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;hi&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
@@ -174,6 +166,7 @@ button.b{font:inherit;font-weight:700;padding:8px 16px;border:2px solid #e4b53a;
 button.b.sel{background:#ffd54a;color:#222}
 #win{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-size:1.9rem;font-weight:800;z-index:9;text-align:center;padding:20px}
 #win[hidden]{display:none}
+#win small{font-size:1.2rem;font-weight:600;opacity:.9}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -296,8 +289,8 @@ function roll(){
   if(rolled||over||busy||(MODE===&quot;online&quot;&amp;&amp;turn!==me))return;
   busy=true;ui();const dc=DE[turn],a=turn;dc.classList.add(&quot;roll&quot;);let n=0;
   const iv=setInterval(()=&gt;{
-    face(a,1+Math.floor(Math.random()*6));            // dice animation
-    if(++n&gt;9){clearInterval(iv);dc.classList.remove(&quot;roll&quot;);D=rollValue();face(a,D);after()}
+    face(a,1+Math.floor(Math.random()*6));tick();            // dice animation
+    if(++n&gt;9){clearInterval(iv);dc.classList.remove(&quot;roll&quot;);D=rollValue();face(a,D);land();after()}
   },70);
 }
 
@@ -324,8 +317,8 @@ function move(i){
   }
   rolled=false;
   if(T[turn].every(q=&gt;q===56)){
-    over=true;push();render();ui();window.onWin&amp;&amp;window.onWin(turn);
-    $(&quot;#wt&quot;).textContent=`🎉 ${PL[turn].n} jeet gaya!`;$(&quot;#win&quot;).hidden=false;return;
+    over=true;push();render();ui();
+    $(&quot;#wt&quot;).innerHTML=`🎉 Congratulations!&lt;br&gt;&lt;small&gt;${PL[turn].n} won the game&lt;/small&gt;`;$(&quot;#win&quot;).hidden=false;return;
   }
   const extra=D===6||cap||t===56;
   if(!extra)next();push();
@@ -333,6 +326,32 @@ function move(i){
   render();ui();
 }
 
+// ---------- Dice sound (synthesised, no audio files needed) ----------
+let AC;
+function ctx(){
+  if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}
+  if(AC.state===&quot;suspended&quot;)AC.resume();
+  return AC;
+}
+window.unlockAudio=ctx;
+document.addEventListener(&quot;pointerdown&quot;,ctx);
+function clack(freq,vol,dur){
+  const a=ctx();if(!a)return;
+  const n=Math.max(1,a.sampleRate*dur|0),buf=a.createBuffer(1,n,a.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i&lt;n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);
+  const s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();
+  s.buffer=buf;f.type=&quot;bandpass&quot;;f.frequency.value=freq;f.Q.value=1.4;g.gain.value=vol;
+  s.connect(f);f.connect(g);g.connect(a.destination);s.start();
+}
+function thump(){
+  const a=ctx();if(!a)return;
+  const o=a.createOscillator(),g=a.createGain(),t=a.currentTime;
+  o.type=&quot;sine&quot;;o.frequency.setValueAtTime(170,t);o.frequency.exponentialRampToValueAtTime(60,t+.12);
+  g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.15);
+  o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.16);
+}
+const tick=()=&gt;{if(Math.random()&lt;.85)clack(1600+Math.random()*2400,.25+Math.random()*.25,.03)};  // rattle while rolling
+const land=()=&gt;{clack(1100,.7,.06);thump()};                                                       // final clack when it settles
 // ---------- Computer player ----------
 function pick(){
   let best=-1,bs=-1e9;
@@ -363,10 +382,10 @@ function push(){
 function apply(st){
   if(!st||st.seq&lt;=seq)return;seq=st.seq;
   T=JSON.parse(st.T);turn=st.turn;D=st.D;rolled=!!st.rolled;over=!!st.over;busy=false;
-  if(rolled)face(turn,D);
+  if(rolled){face(turn,D);land()}
   msg(rolled?`${PL[turn].n} ne ${D} roll kiya`:`${PL[turn].n} ki baari`);
   render();ui();
-  if(over){$(&quot;#wt&quot;).textContent=`🎉 ${PL[turn].n} jeet gaya!`;$(&quot;#win&quot;).hidden=false}
+  if(over){$(&quot;#wt&quot;).innerHTML=`🎉 Congratulations!&lt;br&gt;&lt;small&gt;${PL[turn].n} won the game&lt;/small&gt;`;$(&quot;#win&quot;).hidden=false}
 }
 window.startGame=cfg=&gt;{
   window.stopGame();
@@ -454,14 +473,14 @@ const ready = (async () => {
   }
 })();
 
-/* Realtime Database: users/{uid}. coins=500 / wins=0 only on first login. */
+/* Realtime Database: users/{uid}. created on first login. */
 async function saveUser(u) {
   const guest = u.isAnonymous;
   const name = guest ? "Guest_" + u.uid.slice(-4).toUpperCase() : (u.displayName || "Player");
   const photo = (!guest && u.photoURL) || AVATAR;
   const r = fb.d.ref(fb.db, "users/" + u.uid);
   const res = await fb.d.runTransaction(r, cur =>
-    cur ? { ...cur, uid: u.uid, name, photo } : { uid: u.uid, name, photo, coins: 500, wins: 0 });
+    cur ? { ...cur, uid: u.uid, name, photo } : { uid: u.uid, name, photo });
   return { ...res.snapshot.val(), isGuest: guest };
 }
 async function finish(u) { const data = await saveUser(u); ls.set("user", data); showHome(data); }
@@ -480,8 +499,8 @@ async function login(kind) {
   } catch (e) { console.error(e); signingIn = false; showErr(e); setBusy(false); }
 }
 function demoLogin(kind) {
-  const guest = kind === "guest", uid = "demo_" + kind, old = ls.get("user"), same = old && old.uid === uid;
-  const u = { uid, name: guest ? "Guest_DEMO" : "Demo Player", photo: AVATAR, isGuest: guest, coins: same ? old.coins : 500, wins: same ? old.wins : 0 };
+  const guest = kind === "guest", uid = "demo_" + kind;
+  const u = { uid, name: guest ? "Guest_DEMO" : "Demo Player", photo: AVATAR, isGuest: guest };
   ls.set("user", u); showHome(u);
 }
 
@@ -490,7 +509,6 @@ const esc = s => String(s).replace(/[&<>"]/g, c => "&#" + c.charCodeAt(0) + ";")
 function showHome(u) {
   $("#login").hidden = true; $("#home").hidden = false;
   $("#nm").textContent = u.name; $("#av").src = u.photo || AVATAR;
-  $("#coins").textContent = u.coins; $("#wins").textContent = u.wins;
 }
 $("#bg").onclick = () => login("google");
 $("#bq").onclick = () => login("guest");
@@ -505,28 +523,9 @@ function startGame(cfg) {
   $("#gname").textContent = (u.name || "Player") + (cfg.mode === "online" ? "  ·  You: " + NAMES[cfg.me] : "");
   $("#game").hidden = false;
   const w = $("#gf").contentWindow;
-  w.onWin = t => { if (cfg.mode === "online" ? t === cfg.me : (cfg.mode === "bot" && t === 0)) addWin(); };
-  w.startGame(cfg);
+  w.unlockAudio && w.unlockAudio(); w.startGame(cfg);
 }
 $("#back").onclick = () => { $("#game").hidden = true; try { $("#gf").contentWindow.stopGame(); } catch (e) {} };
-async function saveStats(u) {
-  ls.set("user", u); showHome(u);
-  if (fb) { try { await fb.d.update(fb.d.ref(fb.db, "users/" + u.uid), { wins: u.wins, coins: u.coins, last: u.last || null }); } catch (e) { return false; } }
-  return true;
-}
-async function addWin() {
-  const u = ls.get("user"); if (!u) return;
-  u.wins = (u.wins || 0) + 1; u.coins = (u.coins || 0) + 25;
-  await saveStats(u); toast("🏆 You won! +25 coins");
-}
-async function claim() {
-  const u = ls.get("user"); if (!u) return;
-  const day = new Date().toDateString();
-  if (u.last === day) return toast("Already claimed today. Come back tomorrow!");
-  u.coins = (u.coins || 0) + 100; u.last = day;
-  toast((await saveStats(u)) ? "🎁 +100 coins!" : "Could not save to the database");
-}
-$("#claim").onclick = $("#plus").onclick = claim;
 
 /* ----- rooms (Realtime Database): rooms/{code}, queue2 ----- */
 const SEATS = { 2: [0, 2], 3: [0, 1, 2], 4: [0, 1, 2, 3] }, NAMES = ["Green", "Yellow", "Blue", "Red"];
@@ -627,7 +626,7 @@ $("#n-inv").onclick = async () => {
 };
 $("#gear").onclick = $("#n-pro").onclick = () => {
   const u = ls.get("user") || {};
-  modal(`<b>${esc(u.name || "Player")}</b><p>${u.isGuest ? "Guest" : "Google"} · 🪙 ${u.coins} · 🏆 ${u.wins}</p><button class="lo" data-a="logout">Log out</button><button data-a="x">Close</button>`);
+  modal(`<b>${esc(u.name || "Player")}</b><p>${u.isGuest ? "Guest" : "Google"} account</p><button class="lo" data-a="logout">Log out</button><button data-a="x">Close</button>`);
 };
 </script>
 </body>
