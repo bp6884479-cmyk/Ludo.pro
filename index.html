@@ -180,7 +180,7 @@ button.b.sel{background:#ffd54a;color:#222}
   &lt;div class=&quot;row&quot; id=&quot;bot&quot;&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;p id=&quot;msg&quot;&gt;&lt;/p&gt;
-&lt;div class=&quot;opt&quot;&gt;Players:
+&lt;div class=&quot;opt&quot; style=&quot;display:none&quot;&gt;Players:
   &lt;button class=&quot;b&quot; data-n=&quot;2&quot;&gt;2&lt;/button&gt;&lt;button class=&quot;b&quot; data-n=&quot;3&quot;&gt;3&lt;/button&gt;&lt;button class=&quot;b&quot; data-n=&quot;4&quot;&gt;4&lt;/button&gt;
   &lt;button class=&quot;b&quot; id=&quot;rs&quot;&gt;Naya Game&lt;/button&gt;
 &lt;/div&gt;
@@ -400,7 +400,7 @@ function apply(st){
 window.startGame=cfg=&gt;{
   window.stopGame();
   MODE=cfg.mode||&quot;local&quot;;bots=MODE===&quot;bot&quot;?[0,1,1,1]:[0,0,0,0];me=cfg.me||0;seq=0;
-  $(&quot;.opt&quot;).style.display=MODE===&quot;local&quot;?&quot;&quot;:&quot;none&quot;;
+  $(&quot;.opt&quot;).style.display=&quot;none&quot;;
   $(&quot;#again&quot;).style.display=MODE===&quot;online&quot;?&quot;none&quot;:&quot;&quot;;
   init(cfg.n||4);
   if(MODE===&quot;online&quot;){NET=cfg;NET.off=cfg.d.onValue(cfg.d.ref(cfg.db,&quot;rooms/&quot;+cfg.code+&quot;/st&quot;),s=&gt;apply(s.val()))}
@@ -610,6 +610,7 @@ $("#lbx").onclick = async e => {
   try {
     if (a === "x") closeModal();
     else if (a === "bot") startGame({ mode: "bot", n });
+    else if (a === "loc") startGame({ mode: "local", n });
     else if (a === "pc") document.querySelectorAll("#pcnt button").forEach(x => x.classList.toggle("sel", x === b));
     else if (a === "mk") { const c = await createRoom(+$("#pcnt .sel").dataset.n, false); waitRoom(c, "Room created. Share this code", true); }
     else if (a === "cp") { await navigator.clipboard.writeText(b.dataset.c); toast("Code copied!"); }
@@ -640,7 +641,8 @@ $("#c-on").onclick = async () => {
 };
 $("#c-pc").onclick = () => modal(`<b>VS Computer</b><p>Choose how many bots to play against</p>
   <div class="row"><button data-a="bot" data-n="2">1 Bot</button><button data-a="bot" data-n="3">2 Bots</button><button data-a="bot" data-n="4">3 Bots</button></div><button data-a="x">Close</button>`);
-$("#c-pp").onclick = () => startGame({ mode: "local", n: 4 });
+$("#c-pp").onclick = () => modal(`<b>Pass N Play</b><p>How many players?</p>
+  <div class="row"><button data-a="loc" data-n="2">2 Players</button><button data-a="loc" data-n="3">3 Players</button><button data-a="loc" data-n="4">4 Players</button></div><button data-a="x">Close</button>`);
 $("#n-help").onclick = () => modal(`<b>How to play</b><p>Roll a 6 to bring a token out. Move around the board and reach the centre with an exact roll. Land on an opponent (not on ★ or start squares) to send it home. A 6, a capture or reaching home gives another turn. Bring all 4 tokens home first to win!</p><button data-a="x">Got it</button>`);
 $("#n-inv").onclick = async () => {
   const d = { title: "Ludo Crush", text: "Play Ludo Crush with me!", url: location.href.split("#")[0] };
