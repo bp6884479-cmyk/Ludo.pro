@@ -3,74 +3,129 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ludo Crush – Login</title>
+<title>Ludo Crush</title>
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--G:#2e9e3f;--Y:#fcd22f;--B:#1f8fe5;--R:#e32b2b}
-html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);background-color:#16358f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 26px,transparent 26px 52px),repeating-linear-gradient(-45deg,rgba(0,0,0,.1) 0 26px,transparent 26px 52px);background-attachment:fixed}
-*{box-sizing:border-box}
-body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px 14px;background:transparent}
-.G{--k:var(--G)}.Y{--k:var(--Y)}.B{--k:var(--B)}.R{--k:var(--R)}
-.pin{position:relative;display:inline-block;width:30px;height:30px;margin:4px 7px}
-.pin::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.5),transparent 50%),var(--k);border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:2px 2px 5px #0007}
-.pin::after{content:"";position:absolute;left:28%;top:28%;width:44%;height:44%;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
-.pins{display:flex;animation:bob 1.6s ease-in-out infinite alternate}
-@keyframes bob{to{transform:translateY(-8px)}}
-h1{margin:0;font-size:clamp(2.2rem,10vw,3.4rem);font-weight:900;letter-spacing:2px;text-shadow:0 4px 0 #0005;text-align:center;line-height:1.05}
-h1 span:nth-child(1){color:var(--R)}h1 span:nth-child(2){color:var(--G)}h1 span:nth-child(3){color:var(--Y)}h1 span:nth-child(4){color:var(--B)}
-.sub{margin:-6px 0 0;opacity:.85;font-weight:600;text-align:center}
-.card{width:min(92vw,380px);padding:22px 20px;border:3px solid #e4b53a;border-radius:16px;background:linear-gradient(#2a58c4,#173a96);box-shadow:0 10px 26px #0008;display:flex;flex-direction:column;gap:12px;align-items:stretch;text-align:center}
-.card[hidden],#demo[hidden],#go[hidden]{display:none}
-button{font:inherit;font-weight:800;font-size:1.05rem;padding:14px 16px;border:0;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:inset 0 -4px 0 #0003,0 3px 6px #0005}
-button:active{transform:translateY(2px)}
-button:disabled{opacity:.55;cursor:wait}
-.gg{background:#fff;color:#333}
-.gs{background:#ffd54a;color:#222}
-.out{background:transparent;color:#fff;box-shadow:none;border:2px solid #fff6;font-size:.95rem;padding:10px}
-.or{display:flex;align-items:center;gap:10px;opacity:.8;font-size:.85rem}
-.or::before,.or::after{content:"";flex:1;height:1px;background:#fff6}
-#err{margin:0;min-height:1.2em;color:#ffb4b4;font-weight:600;font-size:.9rem}
-#demo{width:min(92vw,380px);margin:0;padding:10px 12px;border-radius:10px;background:#ffd54a;color:#222;font-size:.85rem;font-weight:600;text-align:center}
-#av{width:84px;height:84px;border-radius:50%;border:4px solid #ffd54a;background:#fff;object-fit:cover;margin:0 auto}
-#nm{margin:0;font-size:1.3rem}
-#ty,#st,#note{margin:0;opacity:.9}
-#st{font-weight:800;color:#ffd54a}
-#note{font-size:.8rem}
-#game{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;background:#16358f;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-#game[hidden]{display:none}
+:root{--G:#2e9e3f;--Y:#fcd22f;--B:#1f8fe5;--R:#e32b2b;--gold:#f5b82e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#16358f;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+.scr{position:fixed;inset:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.scr>*{width:min(100%,460px)}
+.maroon{background:repeating-linear-gradient(45deg,rgba(255,255,255,.035) 0 3px,transparent 3px 7px),radial-gradient(ellipse at 50% 28%,#9a1a2c,#3b0611 78%)}
+.blue{background:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 26px,transparent 26px 52px),repeating-linear-gradient(-45deg,rgba(0,0,0,.1) 0 26px,transparent 26px 52px),radial-gradient(circle at 50% 25%,#3f7bff,#1a49b8 70%)}
+/* ---------- logo ---------- */
+.frame{margin:auto 0 0;padding:14px 14px 12px;border:5px solid var(--gold);border-radius:22px;background:radial-gradient(circle at 50% 35%,#4aa0ff,#1446b5);box-shadow:0 0 0 3px #7a4a00,0 12px 28px #000a;width:min(86vw,320px)!important}
+.lg svg{width:100%;height:auto;display:block}
+.bob{animation:bob 1.4s ease-in-out infinite alternate}.bob:nth-of-type(2n){animation-delay:.35s}
+@keyframes bob{to{transform:translateY(-5px)}}
+.dice{transform-box:fill-box;transform-origin:center;animation:wob 2.4s ease-in-out infinite}
+@keyframes wob{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(14deg) translateY(-6px)}}
+/* ---------- login ---------- */
+.pill{width:min(78vw,300px)!important;margin-top:18px;padding:14px 20px;border-radius:999px;border:3px solid #f3c34a;font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;gap:10px;color:#fff;text-shadow:0 1px 2px #0008;box-shadow:inset 0 2px 0 #fff7,0 4px 0 #6a4300,0 9px 14px #0009}
+.pill:active{transform:translateY(3px)}
+.pill:disabled{opacity:.55}
+.gg{background:linear-gradient(#fff,#dcdcdc);color:#333;text-shadow:none}
+.gu{background:linear-gradient(#b052e8,#5a1a8f)}
+#err{margin:12px 0 auto;min-height:1.3em;color:#ffd0d0;font-weight:700;font-size:.9rem;text-align:center;padding:0 16px}
+#login .frame{margin-top:auto}
+#demo{position:fixed;z-index:20;top:env(safe-area-inset-top,0px);left:8px;right:8px;margin:6px auto 0;max-width:440px;padding:8px 12px;border-radius:10px;background:#ffd54a;color:#222;font-size:.78rem;font-weight:600;text-align:center}
+/* ---------- home ---------- */
+.ttl{text-align:center;margin-top:8px}
+.ltr i{display:inline-grid;place-items:center;width:44px;height:44px;margin:0 2px;border-radius:50%;background:#fff;border:4px solid var(--c);color:var(--c);font:900 1.65rem/1 system-ui;font-style:normal;box-shadow:0 4px 0 #0005}
+.rib{display:inline-block;margin-top:8px;padding:2px 24px;border-radius:6px;background:linear-gradient(#ffe27a,#e39b0f);border:2px solid #7a4a00;color:#5a2d00;font-weight:900;font-size:1.25rem;letter-spacing:7px;box-shadow:0 3px 0 #7a4a00}
+#home::before{content:"";position:fixed;inset:5px;border:4px solid #f5c630;border-radius:16px;pointer-events:none;z-index:3}
+.top{display:flex;align-items:center;gap:8px;padding:18px 16px 4px}
+.me{position:relative;flex:none}
+#av{width:48px;height:48px;border-radius:50%;border:3px solid var(--gold);background:#fff;object-fit:cover;display:block}
+.lv{position:absolute;left:-4px;bottom:-4px;width:18px;height:18px;border-radius:50%;background:var(--gold);color:#3a2300;font-size:.7rem;font-weight:900;display:grid;place-items:center}
+#nm{font-weight:800;max-width:20vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 3px #0008}
+.gear{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--gold);background:#0b2a78;font-size:1rem}
+.chips{display:flex;gap:6px;margin-left:auto}
+.chip{display:flex;align-items:center;gap:4px;background:linear-gradient(#0a1f5c,#16399a);border:2px solid var(--gold);border-radius:999px;padding:3px 4px 3px 10px;font-weight:800;white-space:nowrap}
+.chip:last-child{padding-right:12px}
+.chip em{font-style:normal;background:#2fd24b;color:#fff;border-radius:6px;width:22px;height:22px;display:grid;place-items:center;font-weight:900;cursor:pointer}
+.hl{margin:4px auto 0!important;width:min(80vw,300px)!important;text-align:center}
+.crown{font-size:2.1rem;line-height:1;filter:drop-shadow(0 3px 0 #7a4a00)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px 18px 0}
+.card{border:0;padding:5px;border-radius:22px;background:linear-gradient(#ffe27a,#d98c06);box-shadow:0 5px 0 #7a4a00,0 10px 14px #0008;color:#fff}
+.card:active{transform:translateY(3px)}
+.card .in{border-radius:17px;background:linear-gradient(#2d62d6,#0c2d80);padding:8px 8px 9px;font-weight:900;font-size:.88rem;line-height:1.15;text-shadow:0 2px 0 #0007;display:flex;flex-direction:column;align-items:center;gap:5px}
+.card .ic{position:relative;width:100%;height:56px;border-radius:11px;background:linear-gradient(#071845,#13359a);border:2px solid #f5c630;display:grid;place-items:center;font-size:2rem}
+.card .ic::before,.card .ic::after{content:"";position:absolute;top:9px;bottom:9px;width:15px;border-radius:5px;background:linear-gradient(#ffe27a,#c77a00)}
+.card .ic::before{left:10px}.card .ic::after{right:10px}
+.card small{font-size:.66rem;color:#8dff9b;text-shadow:none;font-weight:700}
+.claim{margin:18px auto 0;width:min(86%,380px)!important;padding:12px;border:3px solid #7a4a00;border-radius:14px;background:linear-gradient(#ffe27a,#e39b0f);color:#3a2300;font-weight:900;letter-spacing:1px;box-shadow:0 4px 0 #7a4a00;animation:glow 1.6s infinite alternate}
+.claim em{font-style:normal;background:#3a2300;color:#ffe27a;padding:2px 8px;border-radius:8px;margin-left:6px}
+@keyframes glow{to{box-shadow:0 4px 0 #7a4a00,0 0 22px 4px #ffd54a}}
+.spacer{flex:1;min-height:16px}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:16px 10px 14px;background:linear-gradient(#0d2468,#071845);border-top:3px solid var(--gold)}
+.nav button{background:none;border:0;font-weight:700;font-size:.7rem;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0}
+.nav button span{font-size:1.5rem}
+.nav .on{background:linear-gradient(#ffd54a,#e39b0f);color:#3a2300;border-radius:12px;transform:translateY(-12px);box-shadow:0 3px 8px #0008}
+#lobby{position:fixed;inset:0;z-index:40;background:#000a;display:grid;place-items:center}
+#lbx{width:min(88vw,340px);padding:20px;border:4px solid var(--gold);border-radius:18px;background:linear-gradient(#2a5fd0,#0b2a78);display:flex;flex-direction:column;gap:12px;text-align:center;max-height:90vh;overflow:auto}
+#lbx p{margin:0;font-size:.9rem}
+#lbx button{padding:12px;border-radius:12px;border:2px solid var(--gold);background:#0b2a78;font-weight:800;flex:1}
+#lbx .lo{background:linear-gradient(#ff6a5a,#c0261a)}
+#lbx .row{display:flex;gap:8px}
+#lbx input{padding:12px;border-radius:10px;border:2px solid var(--gold);background:#fff;color:#222;font:800 1.3rem monospace;text-align:center;text-transform:uppercase;letter-spacing:6px;width:100%}
+.code{font:900 2.4rem monospace;letter-spacing:8px;background:#0a1f5c;border:2px dashed var(--gold);border-radius:10px;padding:6px}
+/* ---------- game, sheet, toast ---------- */
+#game{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;background:#16358f;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 #gbar{display:flex;align-items:center;gap:12px;padding:8px 12px;font-weight:700}
-#gbar .out{padding:8px 14px}
+#gbar button{padding:8px 14px;border:2px solid #fff6;border-radius:10px;background:none;font-weight:800}
 #gf{flex:1;min-height:0;width:100%;border:0}
+#toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);padding:10px 18px;border-radius:999px;background:#000d;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+#toast.on{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
-<div class="pins"><i class="pin G"></i><i class="pin Y"></i><i class="pin B"></i><i class="pin R"></i></div>
-<h1><span>L</span><span>U</span><span>D</span><span>O</span><br><span>C</span><span>R</span><span>U</span><span>S</span><span>H</span></h1>
-<p class="sub">Play with friends and enjoy the win!</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="pn"><ellipse cy="17" rx="10" ry="3" fill="#0005"/><path d="M0-20C-12-20-16-6-8 4L0 16 8 4C16-6 12-20 0-20Z" stroke="#fff" stroke-width="2.5"/><circle cy="-8" r="5" fill="#fff"/><ellipse cx="-5" cy="-13" rx="3" ry="6" fill="#fff" opacity=".35" transform="rotate(20 -5 -13)"/></g>
+</defs></svg>
 
-<p id="demo" hidden>Preview mode: Firebase is blocked in this sandbox, so login is simulated locally. Host this file (or use localhost) for real Firebase login.</p>
+<p id="demo" hidden>Preview mode: Firebase is blocked in this sandbox, so login is simulated locally. Host this file for real Firebase login.</p>
 
-<div class="card" id="login">
-  <button class="gg" id="bg">
+<!-- LOGIN -->
+<main id="login" class="scr maroon">
+  <div class="frame"><div class="lg"></div><div class="ttl"><b>LUDO</b><i>CRUSH</i></div></div>
+  <button class="pill gg" id="bg">
     <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
     <span>Sign in with Google</span>
   </button>
-  <div class="or">or</div>
-  <button class="gs" id="bq"><span>👤 Play as Guest</span></button>
+  <button class="pill gu" id="bq">👤 Play as Guest</button>
   <p id="err"></p>
-</div>
+</main>
 
-<div class="card" id="home" hidden>
-  <img id="av" alt="Profile">
-  <h2 id="nm"></h2>
-  <p id="ty"></p>
-  <p id="st"></p>
-  <button class="gs" id="go">🎲 Play Ludo</button>
-  <p id="note"></p>
-  <button class="out" id="lo">Log out</button>
-</div>
+<!-- HOME -->
+<main id="home" class="scr blue" hidden>
+  <header class="top">
+    <div class="me"><img id="av" alt=""><span class="lv">1</span></div>
+    <b id="nm"></b>
+    <button class="gear" id="gear" aria-label="Profile">⚙️</button>
+    <div class="chips"><span class="chip">🪙 <b id="coins">500</b><em id="plus">+</em></span><span class="chip">🏆 <b id="wins">0</b></span></div>
+  </header>
+  <div class="hl"><div class="crown">👑</div><div class="ttl"></div><div class="lg"></div></div>
+  <div class="grid">
+    <button class="card" id="c-on"><div class="in"><div class="ic">🌐</div>PLAY<br>ONLINE<small>● Quick 1v1 match</small></div></button>
+    <button class="card" id="c-fr"><div class="in"><div class="ic">👥</div>PLAY WITH<br>FRIENDS<small>● Room code, 2–4 players</small></div></button>
+    <button class="card" id="c-pc"><div class="in"><div class="ic">🤖</div>VS<br>COMPUTER<small>● 1–3 bots</small></div></button>
+    <button class="card" id="c-pp"><div class="in"><div class="ic">🎲</div>PASS N<br>PLAY<small>● 2–4 on one device</small></div></button>
+  </div>
+  <button class="claim" id="claim">🎁 CLAIM DAILY BONUS <em>+100</em></button>
+  <div class="spacer"></div>
+  <nav class="nav">
+    <button id="n-help"><span>❓</span>Help</button>
+    <button id="n-fr"><span>🧑‍🤝‍🧑</span>Friends</button>
+    <button class="on"><span>🏠</span>Home</button>
+    <button id="n-inv"><span>📣</span>Invite</button>
+    <button id="n-pro"><span>👤</span>Profile</button>
+  </nav>
+</main>
 
 <div id="game" hidden>
-  <div id="gbar"><button class="out" id="back">&larr; Back</button><span id="gname"></span></div>
+  <div id="gbar"><button id="back">← Back</button><span id="gname"></span></div>
   <iframe id="gf" title="Ludo" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;hi&quot;&gt;
 &lt;head&gt;
@@ -187,11 +242,11 @@ const face=(a,n)=&gt;[...DE[a].children].forEach((e,i)=&gt;e.className=PIPS[n].i
 // ---------- Tokens (pin shape) ----------
 const E=PL.map((pl,a)=&gt;[0,1,2,3].map(i=&gt;{
   const e=document.createElement(&quot;div&quot;);e.className=&quot;pin tk &quot;+pl.k;
-  e.onclick=()=&gt;a===turn&amp;&amp;move(i);B.appendChild(e);return e;
+  e.onclick=()=&gt;a===turn&amp;&amp;!bots[a]&amp;&amp;(MODE!==&quot;online&quot;||a===me)&amp;&amp;move(i);B.appendChild(e);return e;
 }));
 
 // ---------- Game state ----------
-let T,turn,D,rolled,over,busy,act,N=4;
+let T,turn,D,rolled,over,busy,act,N=4,bots=[0,0,0,0],MODE=&quot;local&quot;,NET=null,me=0,seq=0,kt;
 const msg=t=&gt;$(&quot;#msg&quot;).textContent=t;
 const movable=()=&gt;T[turn].map((t,i)=&gt;(t&lt;0?D===6:t+D&lt;=56)?i:-1).filter(i=&gt;i&gt;=0);
 const next=()=&gt;{do turn=(turn+1)%4;while(!act[turn])};
@@ -215,7 +270,7 @@ function render(){
     else{const q=t&lt;=50?P[(pl.s+t)%52]:pl.h(t);x=q[1]+.5;y=q[0]+.5}
     const e=E[a][i];
     e.classList.toggle(&quot;done&quot;,t===56);
-    e.classList.toggle(&quot;can&quot;,a===turn&amp;&amp;mv.includes(i));
+    e.classList.toggle(&quot;can&quot;,a===turn&amp;&amp;!bots[a]&amp;&amp;(MODE!==&quot;online&quot;||a===me)&amp;&amp;mv.includes(i));
     const o={e,x,y};L.push(o);
     if(t&gt;=0&amp;&amp;t&lt;56)(g[x+&quot;,&quot;+y]=g[x+&quot;,&quot;+y]||[]).push(o);
   })});
@@ -224,9 +279,10 @@ function render(){
 }
 
 function ui(){
+  kick();
   PL.forEach((_,a)=&gt;{
     PN[a].classList.toggle(&quot;on&quot;,act[a]&amp;&amp;a===turn&amp;&amp;!over);
-    DE[a].disabled=!(a===turn&amp;&amp;!rolled&amp;&amp;!over&amp;&amp;!busy);
+    DE[a].disabled=!(a===turn&amp;&amp;!rolled&amp;&amp;!over&amp;&amp;!busy&amp;&amp;!bots[a]&amp;&amp;(MODE!==&quot;online&quot;||a===me));
   });
 }
 
@@ -237,7 +293,7 @@ function rollValue(){
   return 1+Math.floor(Math.random()*5);
 }
 function roll(){
-  if(rolled||over||busy)return;
+  if(rolled||over||busy||(MODE===&quot;online&quot;&amp;&amp;turn!==me))return;
   busy=true;ui();const dc=DE[turn],a=turn;dc.classList.add(&quot;roll&quot;);let n=0;
   const iv=setInterval(()=&gt;{
     face(a,1+Math.floor(Math.random()*6));            // dice animation
@@ -246,10 +302,10 @@ function roll(){
 }
 
 function after(){
-  busy=false;rolled=true;
+  busy=false;rolled=true;push();
   if(!movable().length){
     busy=true;msg(`${PL[turn].n}: ${D} aaya, par koi token chal nahi sakta. Baari badal rahi hai...`);ui();
-    setTimeout(()=&gt;{busy=false;rolled=false;next();msg(`${PL[turn].n} ki baari — apna dice roll karo`);ui();render()},1300);
+    setTimeout(()=&gt;{busy=false;rolled=false;next();push();msg(`${PL[turn].n} ki baari — apna dice roll karo`);ui();render()},1300);
     return;
   }
   msg(`${D} aaya! Uchhalte hue token par click karo.`);ui();render();
@@ -268,15 +324,59 @@ function move(i){
   }
   rolled=false;
   if(T[turn].every(q=&gt;q===56)){
-    over=true;render();ui();
+    over=true;push();render();ui();window.onWin&amp;&amp;window.onWin(turn);
     $(&quot;#wt&quot;).textContent=`🎉 ${PL[turn].n} jeet gaya!`;$(&quot;#win&quot;).hidden=false;return;
   }
   const extra=D===6||cap||t===56;
-  if(!extra)next();
+  if(!extra)next();push();
   msg((cap?&quot;Capture! &quot;:&quot;&quot;)+(extra?`${PL[turn].n} ko dobara chance — dice roll karo`:`${PL[turn].n} ki baari — apna dice roll karo`));
   render();ui();
 }
 
+// ---------- Computer player ----------
+function pick(){
+  let best=-1,bs=-1e9;
+  movable().forEach(i=&gt;{
+    const t=T[turn][i],nt=t&lt;0?0:t+D;let s=nt;
+    if(t&lt;0)s+=40;
+    if(nt===56)s+=90;
+    if(nt&lt;=50){
+      const idx=(PL[turn].s+nt)%52;
+      if(SAFE.has(idx))s+=15;
+      else PL.forEach((o,b)=&gt;{if(b===turn||!act[b])return;T[b].forEach(q=&gt;{if(q&gt;=0&amp;&amp;q&lt;=50&amp;&amp;(o.s+q)%52===idx)s+=100})});
+    }
+    s+=Math.random();
+    if(s&gt;bs){bs=s;best=i}
+  });
+  return best;
+}
+function kick(){
+  clearTimeout(kt);
+  if(over||busy||!bots[turn])return;
+  kt=setTimeout(()=&gt;{if(!rolled)roll();else{const m=pick();if(m&gt;=0)move(m)}},950);
+}
+// ---------- Online sync (Firebase Realtime Database) ----------
+function push(){
+  if(!NET)return;seq++;
+  NET.d.set(NET.d.ref(NET.db,&quot;rooms/&quot;+NET.code+&quot;/st&quot;),{T:JSON.stringify(T),turn,D,rolled,over,seq});
+}
+function apply(st){
+  if(!st||st.seq&lt;=seq)return;seq=st.seq;
+  T=JSON.parse(st.T);turn=st.turn;D=st.D;rolled=!!st.rolled;over=!!st.over;busy=false;
+  if(rolled)face(turn,D);
+  msg(rolled?`${PL[turn].n} ne ${D} roll kiya`:`${PL[turn].n} ki baari`);
+  render();ui();
+  if(over){$(&quot;#wt&quot;).textContent=`🎉 ${PL[turn].n} jeet gaya!`;$(&quot;#win&quot;).hidden=false}
+}
+window.startGame=cfg=&gt;{
+  window.stopGame();
+  MODE=cfg.mode||&quot;local&quot;;bots=MODE===&quot;bot&quot;?[0,1,1,1]:[0,0,0,0];me=cfg.me||0;seq=0;
+  $(&quot;.opt&quot;).style.display=MODE===&quot;local&quot;?&quot;&quot;:&quot;none&quot;;
+  $(&quot;#again&quot;).style.display=MODE===&quot;online&quot;?&quot;none&quot;:&quot;&quot;;
+  init(cfg.n||4);
+  if(MODE===&quot;online&quot;){NET=cfg;NET.off=cfg.d.onValue(cfg.d.ref(cfg.db,&quot;rooms/&quot;+cfg.code+&quot;/st&quot;),s=&gt;apply(s.val()))}
+};
+window.stopGame=()=&gt;{clearTimeout(kt);if(NET&amp;&amp;NET.off)NET.off();NET=null};
 document.querySelectorAll(&quot;[data-n]&quot;).forEach(b=&gt;b.onclick=()=&gt;init(+b.dataset.n));
 $(&quot;#rs&quot;).onclick=$(&quot;#again&quot;).onclick=()=&gt;init();
 init(4);
@@ -286,8 +386,10 @@ init(4);
 "></iframe>
 </div>
 
+<div id="lobby" hidden><div id="lbx"></div></div>
+<div id="toast"></div>
+
 <script>
-/* ===== Settings ===== */
 const firebaseConfig = {
   apiKey: "AIzaSyDFGtCMHWBH9ScOk2YUhk5iJjyh4ug9QSc",
   authDomain: "coinrush-pro-ef37b.firebaseapp.com",
@@ -297,8 +399,6 @@ const firebaseConfig = {
   messagingSenderId: "2523681309",
   appId: "1:2523681309:web:9bf3bf9164d948010cecf4"
 };
-
-/* ===== Helpers ===== */
 const $ = s => document.querySelector(s);
 const AVATAR = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 84"><rect width="84" height="84" fill="#fff"/><circle cx="42" cy="32" r="14" fill="#1f8fe5"/><path d="M14 78c0-18 12-26 28-26s28 8 28 26z" fill="#1f8fe5"/></svg>');
 const ls = {
@@ -306,6 +406,21 @@ const ls = {
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
   del(k){ try { localStorage.removeItem(k); } catch (e) {} }
 };
+
+/* ----- logo artwork (board + 4 pins + dice) ----- */
+const pin = (x, y, c) => `<g transform="translate(${x} ${y}) scale(1.35)"><use class="bob" href="#pn" fill="${c}"/></g>`;
+const LOGO = `<svg viewBox="0 0 240 130"><rect x="6" y="6" width="228" height="118" rx="14" fill="#e9eef7" stroke="#b9c4d8" stroke-width="3"/>
+<rect x="16" y="14" width="86" height="46" rx="6" fill="#2e9e3f"/><rect x="138" y="14" width="86" height="46" rx="6" fill="#fcd22f"/>
+<rect x="16" y="70" width="86" height="46" rx="6" fill="#e32b2b"/><rect x="138" y="70" width="86" height="46" rx="6" fill="#1f8fe5"/>
+${pin(46,44,"#146b24")}${pin(194,44,"#d9a600")}${pin(46,100,"#a61515")}${pin(194,100,"#0f62a8")}
+<g class="dice"><rect x="102" y="47" width="36" height="36" rx="8" fill="#fff" stroke="#999" stroke-width="2"/>
+<g fill="#222"><circle cx="111" cy="56" r="3.5"/><circle cx="129" cy="56" r="3.5"/><circle cx="120" cy="65" r="3.5"/><circle cx="111" cy="74" r="3.5"/><circle cx="129" cy="74" r="3.5"/></g></g></svg>`;
+document.querySelectorAll(".lg").forEach(e => e.innerHTML = LOGO);
+const TITLE = '<div class="ltr">' + "LUDO".split("").map((c, i) => `<i style="--c:${["#e32b2b","#2e9e3f","#e0a800","#1f8fe5"][i]}">${c}</i>`).join("") + '</div><div class="rib">CRUSH</div>';
+document.querySelectorAll(".ttl").forEach(e => e.innerHTML = TITLE);
+
+/* ----- helpers ----- */
+const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 1600); };
 const ERR = {
   "auth/popup-closed-by-user": "The sign-in window was closed. Please try again.",
   "auth/cancelled-popup-request": "The sign-in window was closed. Please try again.",
@@ -322,46 +437,35 @@ const showErr = e => {
 };
 const setBusy = b => { $("#bg").disabled = $("#bq").disabled = b; if (b) $("#err").textContent = ""; };
 
-/* ===== Load Firebase (dynamic import so the buttons always work) ===== */
+/* ----- Firebase (dynamic import so buttons always respond) ----- */
 let fb = null, signingIn = false;
 const CDN = "https://www.gstatic.com/firebasejs/10.12.2/";
 const ready = (async () => {
   try {
-    const [a, au, d] = await Promise.all([
-      import(CDN + "firebase-app.js"),
-      import(CDN + "firebase-auth.js"),
-      import(CDN + "firebase-database.js")
-    ]);
+    const [a, au, d] = await Promise.all([import(CDN + "firebase-app.js"), import(CDN + "firebase-auth.js"), import(CDN + "firebase-database.js")]);
     const app = a.initializeApp(firebaseConfig);
     fb = { au, d, auth: au.getAuth(app), db: d.getDatabase(app) };
-    au.onAuthStateChanged(fb.auth, onAuth);
+    au.onAuthStateChanged(fb.auth, u => { if (!signingIn && u) finish(u).catch(e => { console.error(e); showErr(e); }); });
   } catch (e) {
     console.warn("Firebase could not load, using demo mode:", e);
     $("#demo").hidden = false;
     const u = ls.get("user");
-    if (u && String(u.uid).startsWith("demo_")) showHome(u, true);
+    if (u && String(u.uid).startsWith("demo_")) showHome(u);
   }
 })();
 
-/* ===== Save user in Realtime Database: users/{uid} ===== */
+/* Realtime Database: users/{uid}. coins=500 / wins=0 only on first login. */
 async function saveUser(u) {
   const guest = u.isAnonymous;
   const name = guest ? "Guest_" + u.uid.slice(-4).toUpperCase() : (u.displayName || "Player");
   const photo = (!guest && u.photoURL) || AVATAR;
   const r = fb.d.ref(fb.db, "users/" + u.uid);
-  // Transaction: creates the user with coins=500, wins=0 only the first time; existing coins/wins are kept.
   const res = await fb.d.runTransaction(r, cur =>
-    cur ? { ...cur, uid: u.uid, name, photo }
-        : { uid: u.uid, name, photo, coins: 500, wins: 0 });
+    cur ? { ...cur, uid: u.uid, name, photo } : { uid: u.uid, name, photo, coins: 500, wins: 0 });
   return { ...res.snapshot.val(), isGuest: guest };
 }
-const finish = async u => {
-  const data = await saveUser(u);
-  ls.set("user", data);                    // save to localStorage
-  showHome(data);                          // stay on this page: show the home screen
-};
+async function finish(u) { const data = await saveUser(u); ls.set("user", data); showHome(data); }
 
-/* ===== Buttons ===== */
 async function login(kind) {
   setBusy(true);
   await ready;
@@ -373,47 +477,158 @@ async function login(kind) {
       : await fb.au.signInAnonymously(fb.auth);
     await finish(cred.user);
     signingIn = false; setBusy(false);
-  } catch (e) {
-    console.error(e); signingIn = false; showErr(e); setBusy(false);
-  }
+  } catch (e) { console.error(e); signingIn = false; showErr(e); setBusy(false); }
+}
+function demoLogin(kind) {
+  const guest = kind === "guest", uid = "demo_" + kind, old = ls.get("user"), same = old && old.uid === uid;
+  const u = { uid, name: guest ? "Guest_DEMO" : "Demo Player", photo: AVATAR, isGuest: guest, coins: same ? old.coins : 500, wins: same ? old.wins : 0 };
+  ls.set("user", u); showHome(u);
+}
+
+/* ----- screens ----- */
+const esc = s => String(s).replace(/[&<>"]/g, c => "&#" + c.charCodeAt(0) + ";");
+function showHome(u) {
+  $("#login").hidden = true; $("#home").hidden = false;
+  $("#nm").textContent = u.name; $("#av").src = u.photo || AVATAR;
+  $("#coins").textContent = u.coins; $("#wins").textContent = u.wins;
 }
 $("#bg").onclick = () => login("google");
 $("#bq").onclick = () => login("guest");
-$("#lo").onclick = async () => {
-  ls.del("user");
-  if (fb) { try { await fb.au.signOut(fb.auth); } catch (e) {} }
-  $("#home").hidden = true; $("#login").hidden = false; setBusy(false);
-};
-$("#go").onclick = () => {                  // open the game on the same page (no redirect)
+const modal = h => { $("#lbx").innerHTML = h; $("#lobby").hidden = false; };
+const closeModal = () => $("#lobby").hidden = true;
+const need = () => fb ? true : (toast("Online play needs the hosted page with real Firebase (not available in preview)"), false);
+
+/* ----- start a game inside the page (local / bot / online) ----- */
+function startGame(cfg) {
+  closeModal();
   const u = ls.get("user") || {};
-  $("#gname").textContent = (u.name || "Player") + "  \u00b7  \ud83e\ude99 " + (u.coins ?? 500) + "  \u00b7  \ud83c\udfc6 " + (u.wins ?? 0);
+  $("#gname").textContent = (u.name || "Player") + (cfg.mode === "online" ? "  ·  You: " + NAMES[cfg.me] : "");
   $("#game").hidden = false;
+  const w = $("#gf").contentWindow;
+  w.onWin = t => { if (cfg.mode === "online" ? t === cfg.me : (cfg.mode === "bot" && t === 0)) addWin(); };
+  w.startGame(cfg);
+}
+$("#back").onclick = () => { $("#game").hidden = true; try { $("#gf").contentWindow.stopGame(); } catch (e) {} };
+async function saveStats(u) {
+  ls.set("user", u); showHome(u);
+  if (fb) { try { await fb.d.update(fb.d.ref(fb.db, "users/" + u.uid), { wins: u.wins, coins: u.coins, last: u.last || null }); } catch (e) { return false; } }
+  return true;
+}
+async function addWin() {
+  const u = ls.get("user"); if (!u) return;
+  u.wins = (u.wins || 0) + 1; u.coins = (u.coins || 0) + 25;
+  await saveStats(u); toast("🏆 You won! +25 coins");
+}
+async function claim() {
+  const u = ls.get("user"); if (!u) return;
+  const day = new Date().toDateString();
+  if (u.last === day) return toast("Already claimed today. Come back tomorrow!");
+  u.coins = (u.coins || 0) + 100; u.last = day;
+  toast((await saveStats(u)) ? "🎁 +100 coins!" : "Could not save to the database");
+}
+$("#claim").onclick = $("#plus").onclick = claim;
+
+/* ----- rooms (Realtime Database): rooms/{code}, queue2 ----- */
+const SEATS = { 2: [0, 2], 3: [0, 1, 2], 4: [0, 1, 2, 3] }, NAMES = ["Green", "Yellow", "Blue", "Red"];
+let unw = null, cur = null;
+const rr = c => fb.d.ref(fb.db, "rooms/" + c);
+const who = () => ls.get("user") || {};
+const code4 = () => Array.from({ length: 4 }, () => "ABCDEFGHJKLMNPQRSTUVWXYZ"[Math.random() * 24 | 0]).join("");
+const EMPTY = JSON.stringify([[-1,-1,-1,-1],[-1,-1,-1,-1],[-1,-1,-1,-1],[-1,-1,-1,-1]]);
+async function createRoom(n, pub) {
+  const u = who(); let code;
+  do { code = code4(); } while ((await fb.d.get(rr(code))).exists());
+  await fb.d.set(rr(code), { n, pub: !!pub, status: "waiting", players: { [SEATS[n][0]]: { uid: u.uid, name: u.name } },
+    st: { T: EMPTY, turn: 0, D: 0, rolled: false, over: false, seq: 0 } });
+  return code;
+}
+async function join(code) {
+  code = code.trim().toUpperCase();
+  const r = (await fb.d.get(rr(code))).val();
+  if (!r || r.status !== "waiting") throw new Error("Room not found or already started");
+  const u = who(); let ok = false;
+  const res = await fb.d.runTransaction(fb.d.ref(fb.db, "rooms/" + code + "/players"), p => {
+    ok = false; p = p || {};
+    if (Object.values(p).some(x => x.uid === u.uid)) { ok = true; return p; }
+    const seat = SEATS[r.n].find(x => !p[x]);
+    if (seat === undefined) return;
+    p[seat] = { uid: u.uid, name: u.name }; ok = true; return p;
+  });
+  if (!res.committed || !ok) throw new Error("Room is full");
+  if (Object.keys(res.snapshot.val()).length >= r.n) await fb.d.update(rr(code), { status: "playing" });
+  waitRoom(code, "Joined room", false);
+}
+function waitRoom(code, title, mine) {
+  cur = { code, mine };
+  modal(`<b>${esc(title)}</b><div class="code">${code}</div><p id="cnt">Waiting for players…</p><button data-a="cancel">Cancel</button>`);
+  unw = fb.d.onValue(rr(code), s => {
+    const r = s.val();
+    if (!r) { if (cur) { cur = null; modal(`<b>Room closed</b><button data-a="x">Close</button>`); } return; }
+    const el = $("#cnt"); if (el) el.textContent = `Players ${Object.keys(r.players || {}).length}/${r.n}: waiting…`;
+    if (r.status === "playing") {
+      unw(); unw = null; cur = null;
+      const seat = +Object.keys(r.players).find(k => r.players[k].uid === who().uid);
+      startGame({ mode: "online", n: r.n, me: seat, code, d: fb.d, db: fb.db });
+    }
+  });
+}
+async function leave() {
+  if (unw) { unw(); unw = null; }
+  const c = cur; cur = null; closeModal(); if (!c || !fb) return;
+  try {
+    if (c.mine) { await fb.d.remove(rr(c.code)); await fb.d.runTransaction(fb.d.ref(fb.db, "queue2"), q => q === c.code ? null : q); }
+    else await fb.d.runTransaction(fb.d.ref(fb.db, "rooms/" + c.code + "/players"), p => { if (p) for (const k in p) if (p[k].uid === who().uid) delete p[k]; return p; });
+  } catch (e) {}
+}
+async function quick(tries = 0) {                       // quick 1v1 matchmaking
+  const code = await createRoom(2, true); let take = null;
+  await fb.d.runTransaction(fb.d.ref(fb.db, "queue2"), q => { take = q || null; return q ? null : code; });
+  if (take) {
+    await fb.d.remove(rr(code));
+    try { await join(take); return; } catch (e) { if (tries < 2) return quick(tries + 1); throw e; }
+  }
+  waitRoom(code, "Finding an opponent…", true);
+}
+async function logout() {
+  ls.del("user"); if (fb) { try { await fb.au.signOut(fb.auth); } catch (e) {} }
+  closeModal(); $("#home").hidden = true; $("#login").hidden = false; setBusy(false);
+}
+
+/* ----- menus ----- */
+$("#lbx").onclick = async e => {
+  const b = e.target.closest("[data-a]"); if (!b) return;
+  const a = b.dataset.a, n = +b.dataset.n;
+  try {
+    if (a === "x") closeModal();
+    else if (a === "bot") startGame({ mode: "bot", n });
+    else if (a === "mk") { const c = await createRoom(n, false); waitRoom(c, "Room created. Share this code", true); }
+    else if (a === "jn") await join($("#rc").value);
+    else if (a === "cancel") await leave();
+    else if (a === "logout") logout();
+  } catch (err) { const le = $("#le"); if (le) le.textContent = err.message; else toast(err.message); }
 };
-$("#back").onclick = () => { $("#game").hidden = true; };
-
-/* ===== Already signed in (returning visitor) ===== */
-function onAuth(u) {
-  if (signingIn || !u) return;
-  finish(u).catch(e => { console.error(e); showErr(e); });
-}
-function showHome(u, demo) {
-  $("#login").hidden = true; $("#home").hidden = false;
-  $("#nm").textContent = "Welcome, " + u.name + "!";
-  $("#av").src = u.photo || AVATAR;
-  $("#ty").textContent = u.isGuest ? "Playing as Guest" : "Signed in with Google";
-  $("#st").textContent = "\ud83e\ude99 Coins: " + u.coins + "   \ud83c\udfc6 Wins: " + u.wins;
-  $("#note").textContent = demo ? "Demo mode: data is saved in localStorage only." : "";
-}
-
-/* ===== Demo mode (only when Firebase cannot load, e.g. in a sandboxed preview) ===== */
-function demoLogin(kind) {
-  const guest = kind === "guest", uid = "demo_" + kind, old = ls.get("user");
-  const same = old && old.uid === uid;
-  const user = { uid, name: guest ? "Guest_DEMO" : "Demo Player", photo: AVATAR, isGuest: guest,
-                 coins: same ? old.coins : 500, wins: same ? old.wins : 0 };
-  ls.set("user", user);
-  showHome(user, true);
-}
+const friends = () => need() && modal(`<b>Play with Friends</b><p>Create a room and share the code</p>
+  <div class="row"><button data-a="mk" data-n="2">2 Players</button><button data-a="mk" data-n="3">3</button><button data-a="mk" data-n="4">4</button></div>
+  <p>or join a friend's room</p><input id="rc" maxlength="4" placeholder="CODE" autocomplete="off">
+  <button data-a="jn">Join Room</button><p id="le" style="color:#ffb4b4"></p><button data-a="x">Close</button>`);
+$("#c-fr").onclick = $("#n-fr").onclick = friends;
+$("#c-on").onclick = async () => {
+  if (!need()) return;
+  modal(`<b>Finding an opponent…</b><p>Please wait</p>`);
+  try { await quick(); } catch (e) { modal(`<b>Could not start</b><p>${esc(e.message)}</p><button data-a="x">Close</button>`); }
+};
+$("#c-pc").onclick = () => modal(`<b>VS Computer</b><p>Choose how many bots to play against</p>
+  <div class="row"><button data-a="bot" data-n="2">1 Bot</button><button data-a="bot" data-n="3">2 Bots</button><button data-a="bot" data-n="4">3 Bots</button></div><button data-a="x">Close</button>`);
+$("#c-pp").onclick = () => startGame({ mode: "local", n: 4 });
+$("#n-help").onclick = () => modal(`<b>How to play</b><p>Roll a 6 to bring a token out. Move around the board and reach the centre with an exact roll. Land on an opponent (not on ★ or start squares) to send it home. A 6, a capture or reaching home gives another turn. Bring all 4 tokens home first to win!</p><button data-a="x">Got it</button>`);
+$("#n-inv").onclick = async () => {
+  const d = { title: "Ludo Crush", text: "Play Ludo Crush with me!", url: location.href.split("#")[0] };
+  try { if (navigator.share) await navigator.share(d); else { await navigator.clipboard.writeText(d.url); toast("Link copied!"); } } catch (e) {}
+};
+$("#gear").onclick = $("#n-pro").onclick = () => {
+  const u = ls.get("user") || {};
+  modal(`<b>${esc(u.name || "Player")}</b><p>${u.isGuest ? "Guest" : "Google"} · 🪙 ${u.coins} · 🏆 ${u.wins}</p><button class="lo" data-a="logout">Log out</button><button data-a="x">Close</button>`);
+};
 </script>
 </body>
 </html>
