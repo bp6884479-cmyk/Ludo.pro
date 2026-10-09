@@ -61,6 +61,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 #lbx button{padding:12px;border-radius:12px;border:2px solid var(--gold);background:#0b2a78;font-weight:800;flex:1}
 #lbx .lo{background:linear-gradient(#ff6a5a,#c0261a)}
 #lbx .row{display:flex;gap:8px}
+#lbx hr{width:100%;border:0;border-top:1px solid #fff5;margin:2px 0}
+#lbx button.sel{background:linear-gradient(#ffd54a,#e39b0f);color:#3a2300;border-color:#7a4a00}
+#lbx .gold{background:linear-gradient(#4cd964,#1e9e3a)}
 #lbx input{padding:12px;border-radius:10px;border:2px solid var(--gold);background:#fff;color:#222;font:800 1.3rem monospace;text-align:center;text-transform:uppercase;letter-spacing:6px;width:100%}
 .spin{width:46px;height:46px;margin:6px auto;border:5px solid #ffffff44;border-top-color:#ffd54a;border-radius:50%;animation:sp 1s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -566,7 +569,7 @@ async function join(code, txt) {
 }
 function waitRoom(code, title, mine, txt) {   // txt = quick match: hide the room code, show a spinner
   cur = { code, mine };
-  modal(`<b>${esc(title)}</b>${txt ? '<div class="spin"></div>' : `<div class="code">${code}</div>`}<p id="cnt">${txt || "Waiting for players…"}</p><button data-a="cancel">Cancel</button>`);
+  modal(`<b>${esc(title)}</b>${txt ? '<div class="spin"></div>' : `<div class="code">${code}</div><div class="row"><button data-a="cp" data-c="${code}">📋 Copy</button><button data-a="sh" data-c="${code}">📤 Share</button></div>`}<p id="cnt">${txt || "Waiting for players…"}</p><button data-a="cancel">Cancel</button>`);
   unw = fb.d.onValue(rr(code), s => {
     const r = s.val();
     if (!r) { if (cur) { cur = null; modal(`<b>Room closed</b><button data-a="x">Close</button>`); } return; }
@@ -607,16 +610,28 @@ $("#lbx").onclick = async e => {
   try {
     if (a === "x") closeModal();
     else if (a === "bot") startGame({ mode: "bot", n });
-    else if (a === "mk") { const c = await createRoom(n, false); waitRoom(c, "Room created. Share this code", true); }
+    else if (a === "pc") document.querySelectorAll("#pcnt button").forEach(x => x.classList.toggle("sel", x === b));
+    else if (a === "mk") { const c = await createRoom(+$("#pcnt .sel").dataset.n, false); waitRoom(c, "Room created. Share this code", true); }
+    else if (a === "cp") { await navigator.clipboard.writeText(b.dataset.c); toast("Code copied!"); }
+    else if (a === "sh") {
+      const t = "Join my Ludo Crush room! Code: " + b.dataset.c + "\n" + location.href.split("#")[0];
+      if (navigator.share) await navigator.share({ text: t }); else { await navigator.clipboard.writeText(t); toast("Invite copied!"); }
+    }
     else if (a === "jn") await join($("#rc").value);
     else if (a === "cancel") await leave();
     else if (a === "logout") logout();
   } catch (err) { const le = $("#le"); if (le) le.textContent = err.message; else toast(err.message); }
 };
-const friends = () => need() && modal(`<b>Play with Friends</b><p>Create a room and share the code</p>
-  <div class="row"><button data-a="mk" data-n="2">2 Players</button><button data-a="mk" data-n="3">3</button><button data-a="mk" data-n="4">4</button></div>
-  <p>or join a friend's room</p><input id="rc" maxlength="4" placeholder="CODE" autocomplete="off">
-  <button data-a="jn">Join Room</button><p id="le" style="color:#ffb4b4"></p><button data-a="x">Close</button>`);
+const friends = () => need() && modal(`<b>Play with Friends</b>
+  <p>Have a code? Join your friend's room</p>
+  <input id="rc" maxlength="4" placeholder="CODE" autocomplete="off">
+  <button data-a="jn">Join Room</button>
+  <p id="le" style="color:#ffb4b4"></p>
+  <hr>
+  <p>Or create your own room and send the code to your friends</p>
+  <div class="row" id="pcnt"><button data-a="pc" data-n="2" class="sel">2 Players</button><button data-a="pc" data-n="3">3 Players</button><button data-a="pc" data-n="4">4 Players</button></div>
+  <button class="gold" data-a="mk">Create Room</button>
+  <button data-a="x">Close</button>`);
 $("#c-fr").onclick = $("#n-fr").onclick = friends;
 $("#c-on").onclick = async () => {
   if (!need()) return;
