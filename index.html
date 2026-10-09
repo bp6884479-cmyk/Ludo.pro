@@ -35,6 +35,11 @@ button:disabled{opacity:.55;cursor:wait}
 #ty,#st,#note{margin:0;opacity:.9}
 #st{font-weight:800;color:#ffd54a}
 #note{font-size:.8rem}
+#game{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;background:#16358f;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#game[hidden]{display:none}
+#gbar{display:flex;align-items:center;gap:12px;padding:8px 12px;font-weight:700}
+#gbar .out{padding:8px 14px}
+#gf{flex:1;min-height:0;width:100%;border:0}
 </style>
 </head>
 <body>
@@ -59,14 +64,230 @@ button:disabled{opacity:.55;cursor:wait}
   <h2 id="nm"></h2>
   <p id="ty"></p>
   <p id="st"></p>
-  <button class="gs" id="go">🎲 Continue to Game</button>
+  <button class="gs" id="go">🎲 Play Ludo</button>
   <p id="note"></p>
   <button class="out" id="lo">Log out</button>
 </div>
 
+<div id="game" hidden>
+  <div id="gbar"><button class="out" id="back">&larr; Back</button><span id="gname"></span></div>
+  <iframe id="gf" title="Ludo" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;hi&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;
+&lt;title&gt;Ludo&lt;/title&gt;
+&lt;style&gt;
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--G:#2e9e3f;--Y:#fcd22f;--B:#1f8fe5;--R:#e32b2b}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background-color:#16358f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 26px,transparent 26px 52px),repeating-linear-gradient(-45deg,rgba(0,0,0,.1) 0 26px,transparent 26px 52px);background-attachment:fixed}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,&quot;Segoe UI&quot;,sans-serif;color:#fff;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 8px 22px;background:transparent}
+.G{--k:var(--G)}.Y{--k:var(--Y)}.B{--k:var(--B)}.R{--k:var(--R)}
+#game{width:min(96vw,500px);display:flex;flex-direction:column;gap:8px}
+.row{display:flex;justify-content:space-between}
+.pnl{display:flex;align-items:center;gap:6px;padding:5px 9px;border:3px solid #e4b53a;border-radius:10px;background:linear-gradient(#2a58c4,#173a96);opacity:.85;transition:.2s}
+.pnl.on{opacity:1;box-shadow:0 0 16px 4px #ffd54a}
+.pnl.off{opacity:.3;filter:grayscale(1)}
+.dice{width:62px;height:62px;border:0;border-radius:12px;background:#fff;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:3px;padding:8px;box-shadow:inset 0 -3px 0 #0002,0 3px 6px #0006;cursor:default}
+.pnl.on .dice:not(:disabled){cursor:pointer;animation:pl .8s infinite alternate}@keyframes pl{to{box-shadow:0 0 0 5px #ffd54a,0 0 18px 6px #ffd54a}}
+.dice.roll{animation:sh .14s infinite}
+@keyframes sh{50%{transform:rotate(14deg) scale(1.08)}}
+.dice i.on{background:#222;border-radius:50%}
+.arr{color:#ffd54a;font-size:22px;visibility:hidden}
+.pnl.on .arr{visibility:visible;animation:nd .5s infinite alternate}
+@keyframes nd{to{transform:translateX(4px)}}
+.pin{position:relative;display:inline-block}
+.pin::before{content:&quot;&quot;;position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.5),transparent 50%),var(--k);border:2.5px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:2px 2px 4px #0007}
+.pin::after{content:&quot;&quot;;position:absolute;left:28%;top:28%;width:44%;height:44%;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
+.av{width:24px;height:24px;margin:2px 4px}
+#board{position:relative;width:100%;aspect-ratio:1;display:grid;grid-template:repeat(15,1fr)/repeat(15,1fr);border:3px solid #fff;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 6px 18px #0008}
+.c{border:.5px solid #cfcfcf;background:#fff;font-size:clamp(9px,3vw,16px);font-weight:800;color:#9a9a9a;display:flex;align-items:center;justify-content:center}
+.c.k,.c.y{background:var(--k)}
+.c.y,.c.n{border:0}
+.c.a{color:var(--k)}
+.yb{position:absolute;background:#fff;border-radius:10px;width:26.67%;height:26.67%;box-shadow:inset 0 0 6px #0003}
+.slot{position:absolute;width:6.8%;aspect-ratio:1;border-radius:50%;background:var(--k);transform:translate(-50%,-50%);box-shadow:inset 0 -3px 0 #0003}
+.lb{position:absolute;width:40%;text-align:center;font-weight:800;font-size:clamp(10px,3.2vw,16px);text-shadow:0 1px 2px #0006}
+.ctr{position:absolute;left:40%;top:40%;width:20%;height:20%;background:conic-gradient(from -45deg,#fcd22f 0 90deg,#1f8fe5 0 180deg,#e32b2b 0 270deg,#2e9e3f 0)}
+.tk{position:absolute;width:5.2%;aspect-ratio:1;transform:translate(-50%,-58%);transition:left .25s,top .25s;z-index:2}
+.tk.done{width:3.6%}
+.tk.can{z-index:5;cursor:pointer;animation:hop .45s infinite alternate}
+@keyframes hop{from{transform:translate(-50%,-58%)}to{transform:translate(-50%,-92%)}}
+#msg{margin:0;min-height:2.6em;text-align:center;font-weight:600;text-shadow:0 1px 3px #0008;max-width:min(96vw,500px)}
+.opt{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+button.b{font:inherit;font-weight:700;padding:8px 16px;border:2px solid #e4b53a;border-radius:9px;background:#173a96;color:#fff;cursor:pointer}
+button.b.sel{background:#ffd54a;color:#222}
+#win{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-size:1.9rem;font-weight:800;z-index:9;text-align:center;padding:20px}
+#win[hidden]{display:none}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;game&quot;&gt;
+  &lt;div class=&quot;row&quot; id=&quot;top&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;board&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;row&quot; id=&quot;bot&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p id=&quot;msg&quot;&gt;&lt;/p&gt;
+&lt;div class=&quot;opt&quot;&gt;Players:
+  &lt;button class=&quot;b&quot; data-n=&quot;2&quot;&gt;2&lt;/button&gt;&lt;button class=&quot;b&quot; data-n=&quot;3&quot;&gt;3&lt;/button&gt;&lt;button class=&quot;b&quot; data-n=&quot;4&quot;&gt;4&lt;/button&gt;
+  &lt;button class=&quot;b&quot; id=&quot;rs&quot;&gt;Naya Game&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id=&quot;win&quot; hidden&gt;&lt;div id=&quot;wt&quot;&gt;&lt;/div&gt;&lt;button class=&quot;b&quot; id=&quot;again&quot;&gt;Dobara Khelo&lt;/button&gt;&lt;/div&gt;
+
+&lt;script&gt;
+const $=s=&gt;document.querySelector(s);
+const P=&quot;6,1 6,2 6,3 6,4 6,5 5,6 4,6 3,6 2,6 1,6 0,6 0,7 0,8 1,8 2,8 3,8 4,8 5,8 6,9 6,10 6,11 6,12 6,13 6,14 7,14 8,14 8,13 8,12 8,11 8,10 8,9 9,8 10,8 11,8 12,8 13,8 14,8 14,7 14,6 13,6 12,6 11,6 10,6 9,6 8,5 8,4 8,3 8,2 8,1 8,0 7,0 6,0&quot;.split(&quot; &quot;).map(s=&gt;s.split(&quot;,&quot;).map(Number));
+const SAFE=new Set([0,8,13,21,26,34,39,47]);
+// token progress: -1 yard, 0..50 track, 51..55 home column, 56 = ghar pahunch gaya
+// Clockwise order: Green(top-left) -&gt; Yellow(top-right) -&gt; Blue(bottom-right) -&gt; Red(bottom-left)
+const PL=[
+ {n:&quot;Green&quot;,k:&quot;G&quot;,s:0,y:[[2,2],[4,2],[2,4],[4,4]],h:p=&gt;[7,p-50],f:i=&gt;[6.8,6.75+i*.5]},
+ {n:&quot;Yellow&quot;,k:&quot;Y&quot;,s:13,y:[[11,2],[13,2],[11,4],[13,4]],h:p=&gt;[p-50,7],f:i=&gt;[6.75+i*.5,6.8]},
+ {n:&quot;Blue&quot;,k:&quot;B&quot;,s:26,y:[[11,11],[13,11],[11,13],[13,13]],h:p=&gt;[7,64-p],f:i=&gt;[8.2,6.75+i*.5]},
+ {n:&quot;Red&quot;,k:&quot;R&quot;,s:39,y:[[2,11],[4,11],[2,13],[4,13]],h:p=&gt;[64-p,7],f:i=&gt;[6.75+i*.5,8.2]}
+];
+
+// ---------- Board ----------
+const B=$(&quot;#board&quot;),track=new Map(P.map((q,i)=&gt;[q+&quot;&quot;,i]));
+const hc={},st={&quot;6,1&quot;:&quot;G&quot;,&quot;1,8&quot;:&quot;Y&quot;,&quot;8,13&quot;:&quot;B&quot;,&quot;13,6&quot;:&quot;R&quot;};
+const ar={&quot;7,0&quot;:[&quot;→&quot;,&quot;G&quot;],&quot;0,7&quot;:[&quot;↓&quot;,&quot;Y&quot;],&quot;7,14&quot;:[&quot;←&quot;,&quot;B&quot;],&quot;14,7&quot;:[&quot;↑&quot;,&quot;R&quot;]};
+for(let i=1;i&lt;=5;i++){hc[&quot;7,&quot;+i]=&quot;G&quot;;hc[i+&quot;,7&quot;]=&quot;Y&quot;;hc[&quot;7,&quot;+(14-i)]=&quot;B&quot;;hc[(14-i)+&quot;,7&quot;]=&quot;R&quot;}
+for(let r=0;r&lt;15;r++)for(let c=0;c&lt;15;c++){
+  const d=document.createElement(&quot;div&quot;),k=r+&quot;,&quot;+c;d.className=&quot;c&quot;;
+  const yc=r&lt;6&amp;&amp;c&lt;6?&quot;G&quot;:r&lt;6&amp;&amp;c&gt;8?&quot;Y&quot;:r&gt;8&amp;&amp;c&gt;8?&quot;B&quot;:r&gt;8&amp;&amp;c&lt;6?&quot;R&quot;:&quot;&quot;;
+  if(yc)d.className+=&quot; y &quot;+yc;
+  else if(r&gt;5&amp;&amp;r&lt;9&amp;&amp;c&gt;5&amp;&amp;c&lt;9)d.className+=&quot; n&quot;;
+  else if(hc[k]||st[k])d.className+=&quot; k &quot;+(hc[k]||st[k]);
+  else if(ar[k]){d.className+=&quot; a &quot;+ar[k][1];d.textContent=ar[k][0]}
+  else if(SAFE.has(track.get(k)))d.textContent=&quot;★&quot;;
+  B.appendChild(d);
+}
+const add=(c,css,txt)=&gt;{const e=document.createElement(&quot;div&quot;);e.className=c;Object.assign(e.style,css);if(txt)e.textContent=txt;B.appendChild(e);return e};
+const pc=v=&gt;v/15*100+&quot;%&quot;;
+[[&quot;G&quot;,0,0],[&quot;Y&quot;,9,0],[&quot;B&quot;,9,9],[&quot;R&quot;,0,9]].forEach(([k,x,y])=&gt;{
+  add(&quot;yb&quot;,{left:pc(x+1),top:pc(y+1)});
+  [2,4].forEach(dx=&gt;[2,4].forEach(dy=&gt;add(&quot;slot &quot;+k,{left:pc(x+dx),top:pc(y+dy)})));
+  add(&quot;lb&quot;,{left:pc(x+1.5),top:pc(y&lt;5?y+.15:y+5.2),color:&quot;#fff&quot;},PL.find(p=&gt;p.k===k).n);
+});
+add(&quot;ctr&quot;,{});
+
+// ---------- Panels + dice (har color ka dice uske apne corner ke paas) ----------
+const PIPS=[[],[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];
+const DE=[],PN=[];
+PL.forEach((pl,a)=&gt;{
+  const left=pl.k===&quot;G&quot;||pl.k===&quot;R&quot;,p=document.createElement(&quot;div&quot;);
+  p.className=&quot;pnl &quot;+pl.k;p.style.order=left?0:1;
+  p.innerHTML=left?&#x27;&lt;i class=&quot;pin av&quot;&gt;&lt;/i&gt;&lt;button class=&quot;dice&quot;&gt;&lt;/button&gt;&lt;b class=&quot;arr&quot;&gt;◀&lt;/b&gt;&#x27;:&#x27;&lt;b class=&quot;arr&quot;&gt;▶&lt;/b&gt;&lt;button class=&quot;dice&quot;&gt;&lt;/button&gt;&lt;i class=&quot;pin av&quot;&gt;&lt;/i&gt;&#x27;;
+  $(pl.k===&quot;G&quot;||pl.k===&quot;Y&quot;?&quot;#top&quot;:&quot;#bot&quot;).appendChild(p);
+  const d=p.querySelector(&quot;.dice&quot;);d.innerHTML=&quot;&lt;i&gt;&lt;/i&gt;&quot;.repeat(9);d.onclick=()=&gt;a===turn&amp;&amp;roll();
+  DE.push(d);PN.push(p);
+});
+const face=(a,n)=&gt;[...DE[a].children].forEach((e,i)=&gt;e.className=PIPS[n].includes(i)?&quot;on&quot;:&quot;&quot;);
+
+// ---------- Tokens (pin shape) ----------
+const E=PL.map((pl,a)=&gt;[0,1,2,3].map(i=&gt;{
+  const e=document.createElement(&quot;div&quot;);e.className=&quot;pin tk &quot;+pl.k;
+  e.onclick=()=&gt;a===turn&amp;&amp;move(i);B.appendChild(e);return e;
+}));
+
+// ---------- Game state ----------
+let T,turn,D,rolled,over,busy,act,N=4;
+const msg=t=&gt;$(&quot;#msg&quot;).textContent=t;
+const movable=()=&gt;T[turn].map((t,i)=&gt;(t&lt;0?D===6:t+D&lt;=56)?i:-1).filter(i=&gt;i&gt;=0);
+const next=()=&gt;{do turn=(turn+1)%4;while(!act[turn])};
+
+function init(n){
+  if(n)N=n;
+  act=N===2?[1,0,1,0]:N===3?[1,1,1,0]:[1,1,1,1];   // 2 players: Green vs Blue
+  T=PL.map(()=&gt;[-1,-1,-1,-1]);turn=0;D=0;rolled=false;over=false;busy=false;
+  $(&quot;#win&quot;).hidden=true;
+  PL.forEach((_,a)=&gt;{face(a,1);PN[a].classList.toggle(&quot;off&quot;,!act[a]);E[a].forEach(e=&gt;e.style.display=act[a]?&quot;&quot;:&quot;none&quot;)});
+  document.querySelectorAll(&quot;[data-n]&quot;).forEach(b=&gt;b.classList.toggle(&quot;sel&quot;,+b.dataset.n===N));
+  msg(&quot;Green ki baari — apne dice par click karo. Token nikalne ke liye 6 chahiye.&quot;);ui();render();
+}
+
+function render(){
+  const mv=rolled&amp;&amp;!over&amp;&amp;!busy?movable():[],g={},L=[];
+  PL.forEach((pl,a)=&gt;{if(!act[a])return;T[a].forEach((t,i)=&gt;{
+    let x,y;
+    if(t&lt;0)[x,y]=pl.y[i];
+    else if(t===56)[x,y]=pl.f(i);
+    else{const q=t&lt;=50?P[(pl.s+t)%52]:pl.h(t);x=q[1]+.5;y=q[0]+.5}
+    const e=E[a][i];
+    e.classList.toggle(&quot;done&quot;,t===56);
+    e.classList.toggle(&quot;can&quot;,a===turn&amp;&amp;mv.includes(i));
+    const o={e,x,y};L.push(o);
+    if(t&gt;=0&amp;&amp;t&lt;56)(g[x+&quot;,&quot;+y]=g[x+&quot;,&quot;+y]||[]).push(o);
+  })});
+  for(const k in g){const n=g[k].length;g[k].forEach((o,j)=&gt;o.x+=(j-(n-1)/2)*.32)}
+  L.forEach(o=&gt;{o.e.style.left=pc(o.x);o.e.style.top=pc(o.y)});
+}
+
+function ui(){
+  PL.forEach((_,a)=&gt;{
+    PN[a].classList.toggle(&quot;on&quot;,act[a]&amp;&amp;a===turn&amp;&amp;!over);
+    DE[a].disabled=!(a===turn&amp;&amp;!rolled&amp;&amp;!over&amp;&amp;!busy);
+  });
+}
+
+function rollValue(){
+  // sabke liye same rule: 6 ki chance zyada (28%), aur agar koi token bahar nahi hai to aur zyada (42%)
+  const none=T[turn].every(t=&gt;t&lt;0);
+  if(Math.random()&lt;(none?.42:.28))return 6;
+  return 1+Math.floor(Math.random()*5);
+}
+function roll(){
+  if(rolled||over||busy)return;
+  busy=true;ui();const dc=DE[turn],a=turn;dc.classList.add(&quot;roll&quot;);let n=0;
+  const iv=setInterval(()=&gt;{
+    face(a,1+Math.floor(Math.random()*6));            // dice animation
+    if(++n&gt;9){clearInterval(iv);dc.classList.remove(&quot;roll&quot;);D=rollValue();face(a,D);after()}
+  },70);
+}
+
+function after(){
+  busy=false;rolled=true;
+  if(!movable().length){
+    busy=true;msg(`${PL[turn].n}: ${D} aaya, par koi token chal nahi sakta. Baari badal rahi hai...`);ui();
+    setTimeout(()=&gt;{busy=false;rolled=false;next();msg(`${PL[turn].n} ki baari — apna dice roll karo`);ui();render()},1300);
+    return;
+  }
+  msg(`${D} aaya! Uchhalte hue token par click karo.`);ui();render();
+}
+
+function move(i){
+  if(!rolled||over||busy||!movable().includes(i))return;
+  let t=T[turn][i];t=t&lt;0?0:t+D;T[turn][i]=t;
+  let cap=false;
+  if(t&lt;=50){                                           // capture check (safe cells par nahi)
+    const idx=(PL[turn].s+t)%52;
+    if(!SAFE.has(idx))PL.forEach((o,b)=&gt;{
+      if(b===turn||!act[b])return;
+      T[b].forEach((q,j)=&gt;{if(q&gt;=0&amp;&amp;q&lt;=50&amp;&amp;(o.s+q)%52===idx){T[b][j]=-1;cap=true}});
+    });
+  }
+  rolled=false;
+  if(T[turn].every(q=&gt;q===56)){
+    over=true;render();ui();
+    $(&quot;#wt&quot;).textContent=`🎉 ${PL[turn].n} jeet gaya!`;$(&quot;#win&quot;).hidden=false;return;
+  }
+  const extra=D===6||cap||t===56;
+  if(!extra)next();
+  msg((cap?&quot;Capture! &quot;:&quot;&quot;)+(extra?`${PL[turn].n} ko dobara chance — dice roll karo`:`${PL[turn].n} ki baari — apna dice roll karo`));
+  render();ui();
+}
+
+document.querySelectorAll(&quot;[data-n]&quot;).forEach(b=&gt;b.onclick=()=&gt;init(+b.dataset.n));
+$(&quot;#rs&quot;).onclick=$(&quot;#again&quot;).onclick=()=&gt;init();
+init(4);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</div>
+
 <script>
 /* ===== Settings ===== */
-const GAME_PATH = "/game";                 // where to go after login
 const firebaseConfig = {
   apiKey: "AIzaSyDFGtCMHWBH9ScOk2YUhk5iJjyh4ug9QSc",
   authDomain: "coinrush-pro-ef37b.firebaseapp.com",
@@ -137,7 +358,7 @@ async function saveUser(u) {
 const finish = async u => {
   const data = await saveUser(u);
   ls.set("user", data);                    // save to localStorage
-  location.href = GAME_PATH;               // redirect to /game
+  showHome(data);                          // stay on this page: show the home screen
 };
 
 /* ===== Buttons ===== */
@@ -151,6 +372,7 @@ async function login(kind) {
       ? await fb.au.signInWithPopup(fb.auth, new fb.au.GoogleAuthProvider())
       : await fb.au.signInAnonymously(fb.auth);
     await finish(cred.user);
+    signingIn = false; setBusy(false);
   } catch (e) {
     console.error(e); signingIn = false; showErr(e); setBusy(false);
   }
@@ -162,25 +384,25 @@ $("#lo").onclick = async () => {
   if (fb) { try { await fb.au.signOut(fb.auth); } catch (e) {} }
   $("#home").hidden = true; $("#login").hidden = false; setBusy(false);
 };
-$("#go").onclick = async () => {
-  $("#go").disabled = true;
-  try { await finish(fb.auth.currentUser); } catch (e) { $("#note").textContent = "Error: " + (e.code || e.message); $("#go").disabled = false; }
+$("#go").onclick = () => {                  // open the game on the same page (no redirect)
+  const u = ls.get("user") || {};
+  $("#gname").textContent = (u.name || "Player") + "  \u00b7  \ud83e\ude99 " + (u.coins ?? 500) + "  \u00b7  \ud83c\udfc6 " + (u.wins ?? 0);
+  $("#game").hidden = false;
 };
+$("#back").onclick = () => { $("#game").hidden = true; };
 
 /* ===== Already signed in (returning visitor) ===== */
 function onAuth(u) {
   if (signingIn || !u) return;
-  showHome({ name: u.isAnonymous ? "Guest_" + u.uid.slice(-4).toUpperCase() : (u.displayName || "Player"),
-             photo: (!u.isAnonymous && u.photoURL) || AVATAR, isGuest: u.isAnonymous });
+  finish(u).catch(e => { console.error(e); showErr(e); });
 }
 function showHome(u, demo) {
   $("#login").hidden = true; $("#home").hidden = false;
   $("#nm").textContent = "Welcome, " + u.name + "!";
   $("#av").src = u.photo || AVATAR;
   $("#ty").textContent = u.isGuest ? "Playing as Guest" : "Signed in with Google";
-  $("#st").textContent = demo ? "Coins: " + u.coins + "  ·  Wins: " + u.wins : "";
-  $("#go").hidden = !!demo;
-  $("#note").textContent = demo ? "Demo mode: saved in localStorage only. On a real host, login saves to Realtime Database and redirects to " + GAME_PATH + "." : "";
+  $("#st").textContent = "\ud83e\ude99 Coins: " + u.coins + "   \ud83c\udfc6 Wins: " + u.wins;
+  $("#note").textContent = demo ? "Demo mode: data is saved in localStorage only." : "";
 }
 
 /* ===== Demo mode (only when Firebase cannot load, e.g. in a sandboxed preview) ===== */
